@@ -85,6 +85,22 @@ class App extends React.Component {
     this.state = {
       vendorData: [],
     };
+    this.refresh = this.refresh.bind(this);
+  }
+
+  async refresh() {
+    const allEntries = await axios.get(
+      `https://api.airtable.com/v0/appseli41RFhscJby/abhi?api_key=keyvjiUPSVCMAHe7k`
+    );
+    let data = [];
+    let dataInside = allEntries.data.records;
+    console.log('Vendor Data', allEntries.data.records);
+    for (var i = 0; i < dataInside.length; i++) {
+      data.push(dataInside[i].fields);
+    }
+    this.setState({
+      vendorData: data,
+    });
   }
 
   async componentDidMount() {
@@ -171,7 +187,11 @@ class App extends React.Component {
                   <button class="searchBtn" type="button">
                     <i class="fa fa-search"></i>
                   </button>
-                  <button class="refreshBtn" type="button">
+                  <button
+                    class="refreshBtn"
+                    type="button"
+                    onClick={this.refresh}
+                  >
                     <i class="fa fa-refresh"></i>
                   </button>
                 </span>
